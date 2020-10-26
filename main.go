@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/lil5/typex2/internal/write"
+
 	"github.com/lil5/typex2/internal/generate"
 
 	"github.com/lil5/typex2/internal/read"
@@ -42,7 +44,13 @@ func main() {
 
 			s, _ := generate.GenerateTypescript(st)
 
-			fmt.Printf("Typescript file:\n%s\n", *s)
+			err = write.FileWriter(path, "index.ts", s)
+			if err != nil {
+				fmt.Printf(tools.NoEntry+" Write to file unsuccessful: %v\n", err)
+				return err
+			}
+
+			fmt.Println(tools.CheckMark + " Written to file successfully")
 
 			return nil
 		},

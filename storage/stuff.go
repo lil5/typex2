@@ -15,3 +15,5 @@ type RequestChild struct {
 }
 
 type ArrayOne []string
+
+type Fans map[string]fan

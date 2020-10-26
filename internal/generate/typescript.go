@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/token"
 	"go/types"
+	"sort"
 	"strings"
 
 	"github.com/lil5/typex2/internal/utils"
@@ -14,11 +15,18 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 		return nil, fmt.Errorf("tm pointer is nil")
 	}
 
+	// sort map to help any vcs
+	keys := make([]string, 0, len(*tm))
+	for k := range *tm {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
 	var indent int
 	var s string
-	for n, t := range *tm {
+	for _, n := range keys {
+		t := (*tm)[n]
 		indent = 1
-		fmt.Printf("Name: %s\nType: %v\n\n---\n\n", n, t.String())
 		if token.IsExported(n) {
 			s += "export "
 		}
@@ -82,17 +90,15 @@ func getTypeContent(t types.Type, indent *int) string {
 	case *types.Map:
 		s = getMapType(tt, indent)
 	case *types.Named:
-
-		fmt.Println("What is this?")
-		fmt.Printf("Named: %v\n", tt)
+		s = getNamedType(tt)
 	case *types.Pointer:
 		s = getTypeContent(tt.Elem(), indent)
 		s += " | null"
+		s = fmt.Sprintf("(%s)", s)
 	case *types.Slice:
-		fmt.Printf("Contents of: %v\n", t)
+		s = getSliceType(tt, indent)
 	case *types.Struct:
 		s = getStructType(tt, indent)
-		fmt.Println("struct here")
 	default:
 		s = "unknown"
 	}
@@ -144,20 +150,22 @@ func getMapType(t *types.Map, indent *int) string {
 	return s
 }
 
-func getArrayType(t *types.Array, indent *int) string {
-	itemT := t.Elem()
+func getSliceType(t *types.Slice, indent *int) string {
 	s := getTypeContent(t.Elem(), indent)
-	switch itemT.(type) {
-	case *types.Pointer:
-		s = fmt.Sprintf("(%s)", s)
-	}
+	s += "[]"
+
+	return s
+}
+
+func getArrayType(t *types.Array, indent *int) string {
+	s := getTypeContent(t.Elem(), indent)
 	s += fmt.Sprintf("[/* %d */]", t.Len())
 
 	return s
 }
 
 func getNamedType(t *types.Named) string {
-	return ""
+	return getName(t.String())
 }
 
 func getBasicType(t *types.Basic) string {
