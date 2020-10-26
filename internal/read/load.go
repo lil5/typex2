@@ -2,11 +2,12 @@ package read
 
 import (
 	"errors"
+	"fmt"
 
 	"golang.org/x/tools/go/packages"
 )
 
-func LoadPackages(path string) ([]*packages.Package, error) {
+func LoadPackage(path string) (*packages.Package, error) {
 
 	c := packages.Config{
 		Mode:  packages.NeedTypes | packages.NeedTypesInfo,
@@ -15,12 +16,17 @@ func LoadPackages(path string) ([]*packages.Package, error) {
 
 	pkgs, err := packages.Load(&c, path)
 
-	for _, pkg := range pkgs {
-		if len(pkg.Errors) > 0 {
-			err := errors.New(pkg.Errors[0].Msg)
-			return nil, err
-		}
+	if pkgsLen := len(pkgs); pkgsLen != 1 {
+		err := fmt.Errorf("path must include only one package\ncurrent amount: %d\n", pkgsLen)
+		return nil, err
 	}
 
-	return pkgs, err
+	pkg := pkgs[0]
+
+	if len(pkg.Errors) > 0 {
+		err := errors.New(pkg.Errors[0].Msg)
+		return nil, err
+	}
+
+	return pkg, err
 }

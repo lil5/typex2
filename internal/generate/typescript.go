@@ -1,0 +1,191 @@
+package generate
+
+import (
+	"fmt"
+	"go/token"
+	"go/types"
+	"strings"
+
+	"github.com/lil5/typex2/internal/utils"
+)
+
+func GenerateTypescript(tm *utils.StructMap) (*string, error) {
+	if tm == nil {
+		return nil, fmt.Errorf("tm pointer is nil")
+	}
+
+	var indent int
+	var s string
+	for n, t := range *tm {
+		indent = 1
+		fmt.Printf("Name: %s\nType: %v\n\n---\n\n", n, t.String())
+		if token.IsExported(n) {
+			s += "export "
+		}
+
+		switch tt := t.(type) {
+		case *types.Struct:
+			// generate type content
+			gc := getStructFields(tt, &indent)
+
+			// generate interface
+			deps := getStructDeps(tt)
+			gi1, gi2 := buildInterface(n, deps)
+			s += gi1 + gc + gi2
+		default:
+			// generate type content
+			gc := getTypeContent(tt, &indent)
+			// generate type alias
+			gt1, gt2 := buildTypeAlias(n)
+
+			s += gt1 + gc + gt2
+		}
+	}
+
+	return &s, nil
+}
+
+// run on type struct
+func buildInterface(name string, deps *[]string) (string, string) {
+	s := "interface " + name + " "
+
+	if deps != nil && len(*deps) > 0 {
+		s += "extends "
+		s += strings.Join(*deps, ", ")
+		s += " "
+	}
+
+	s += "{\n"
+	s2 := "}\n\n"
+
+	return s, s2
+}
+
+// TODO: add pointer check and run basic type or interface
+
+func buildTypeAlias(name string) (string, string) {
+	s1 := "type " + name + " = "
+
+	s2 := "\n\n"
+	return s1, s2
+}
+
+func getTypeContent(t types.Type, indent *int) string {
+	var s string
+	switch tt := t.(type) {
+	case *types.Interface, *types.Chan, *types.Signature:
+		s = "any"
+	case *types.Basic:
+		s = getBasicType(tt)
+	case *types.Array:
+		s = getArrayType(tt, indent)
+	case *types.Map:
+		s = getMapType(tt, indent)
+	case *types.Named:
+
+		fmt.Println("What is this?")
+		fmt.Printf("Named: %v\n", tt)
+	case *types.Pointer:
+		s = getTypeContent(tt.Elem(), indent)
+		s += " | null"
+	case *types.Slice:
+		fmt.Printf("Contents of: %v\n", t)
+	case *types.Struct:
+		s = getStructType(tt, indent)
+		fmt.Println("struct here")
+	default:
+		s = "unknown"
+	}
+
+	return s
+}
+
+func getStructType(t *types.Struct, indent *int) string {
+	if t.NumFields() == 0 {
+		return "{}"
+	}
+	s := "{\n"
+	*indent = *indent + 1
+	s += indentStr(indent)
+
+	for i := 0; i < t.NumFields(); i++ {
+
+	}
+	*indent = *indent - 1
+	s += "}"
+	return s
+}
+
+func getStructFields(t *types.Struct, indent *int) string {
+	s := ""
+	for i := 0; i < t.NumFields(); i++ {
+		f := t.Field(i)
+		if !f.Anonymous() {
+			name := getStructTagJSON(t, i)
+
+			s += indentStr(indent)
+			s += fmt.Sprintf("%s: ", name)
+			s += getTypeContent(f.Type(), indent)
+			s += "\n"
+		}
+	}
+
+	return s
+}
+
+func getMapType(t *types.Map, indent *int) string {
+	s := "Record<"
+
+	s += getMapKey(t.Key())
+	s += ", "
+	s += getTypeContent(t.Elem(), indent)
+	s += ">"
+
+	return s
+}
+
+func getArrayType(t *types.Array, indent *int) string {
+	itemT := t.Elem()
+	s := getTypeContent(t.Elem(), indent)
+	switch itemT.(type) {
+	case *types.Pointer:
+		s = fmt.Sprintf("(%s)", s)
+	}
+	s += fmt.Sprintf("[/* %d */]", t.Len())
+
+	return s
+}
+
+func getNamedType(t *types.Named) string {
+	return ""
+}
+
+func getBasicType(t *types.Basic) string {
+	switch t.Info() {
+	case types.IsBoolean:
+		return "boolean"
+	case types.IsNumeric:
+		return "number"
+	case types.IsString:
+		return "string"
+	default:
+		return "any"
+	}
+}
+
+func getMapKey(t types.Type) string {
+	switch tt := t.(type) {
+	case *types.Basic:
+		switch tt.Info() {
+		case types.IsNumeric:
+			return "number"
+		case types.IsString:
+			return "string"
+		}
+	case *types.Map:
+		return getMapKey(tt.Key())
+	case *types.Named:
+		return getMapKey(tt.Underlying())
+	}
+	return "symbol"
+}

@@ -1,4 +1,4 @@
-package read
+package utils
 
 import "go/types"
 

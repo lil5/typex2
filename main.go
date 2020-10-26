@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/lil5/typex2/internal/generate"
+
 	"github.com/lil5/typex2/internal/read"
 
 	"github.com/lil5/typex2/tools"
@@ -29,29 +31,19 @@ func main() {
 				fmt.Println(tools.NoEntry + " Path does not exist")
 			}
 
-			pkgs, err := read.LoadPackages(path)
+			pkg, err := read.LoadPackage(path)
 
 			if err != nil {
-				fmt.Println(tools.NoEntry + " No structs found")
+				fmt.Printf(tools.NoEntry+" Loading packages failed: %v\n", err)
 				return err
 			}
 
-			structTypes := read.MapPackages(pkgs)
+			st := read.MapPackage(pkg)
 
-			for _, st := range structTypes {
-				if st == nil {
-					continue
-				}
+			s, _ := generate.GenerateTypescript(st)
 
-				for n, t := range *st {
-					fmt.Printf("Name: %s\n", n)
-					fmt.Printf("Type: %v\n", t)
-				}
-			}
+			fmt.Printf("Typescript file:\n%s\n", *s)
 
-			// fmt.Printf("firstPkg: %v\n", firstPkg.Types)
-
-			// fmt.Println(tools.Checkbox + " Hello friend!")
 			return nil
 		},
 	}

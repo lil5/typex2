@@ -1,49 +1,28 @@
 package read
 
 import (
-	"fmt"
-	"go/token"
-	"strings"
-
+	"github.com/lil5/typex2/internal/utils"
 	"golang.org/x/tools/go/packages"
 )
 
-func MapPackages(pkgs []*packages.Package) []*StructMap {
-	var sm []*StructMap
-
-	for _, p := range pkgs {
-		sm = append(sm, mapPackage(p))
-	}
-
-	return sm
-}
-
 // filter packages that are not exported
-func mapPackage(pkg *packages.Package) *StructMap {
+func MapPackage(pkg *packages.Package) *utils.StructMap {
 	scope := pkg.Types.Scope()
 
-	sm := make(StructMap)
+	sm := make(utils.StructMap)
 
 	for _, name := range scope.Names() {
-		if !isExported(name) {
-			fmt.Println("isExported: false")
-			continue
-		}
 		obj := scope.Lookup(name)
-		path := obj.Pkg().Path() + "." + name
+
+		// This is how to get the go path + name
+		// path := obj.Pkg().Path() + "." + name
 
 		t := obj.Type()
 
-		sm[path] = t.Underlying()
+		sm[name] = t.Underlying()
 
 		// fmt.Printf("type: %s, path: %s\n", t.String(), path)
 	}
 
 	return &sm
-}
-
-func isExported(s string) bool {
-	n := strings.ReplaceAll(s, ".", "/")
-	i := strings.LastIndex(n, "/")
-	return token.IsExported(n[i+1:])
 }
