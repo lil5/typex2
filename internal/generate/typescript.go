@@ -192,7 +192,6 @@ func getBasicType(t *types.Basic) string {
 	case types.String:
 		return "string"
 	default:
-		fmt.Printf("basic t: %v\n", t.Info())
 		return "any"
 	}
 }
