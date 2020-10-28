@@ -4,9 +4,13 @@ export type TestByte = number
 
 export type TestBytes = number[]
 
+export type TestChan = unknown
+
 export type TestFloat32 = number
 
 export type TestFloat64 = number
+
+export type TestFunc = unknown
 
 export type TestInt = number
 
@@ -18,9 +22,19 @@ export type TestInt64 = number
 
 export type TestInt8 = number
 
+export type TestInterface = Record<string, any>
+
 export type TestMap = Record<string, string>
 
 export type TestMapInt = Record<number, string>
+
+export type TestPointer = (string | null)
+
+export interface TestPointerStruct {
+	PP: (string | null)
+}
+
+export type TestRune = number
 
 export type TestSliceSlice = TestSliceString[]
 
@@ -54,6 +68,8 @@ export type TestUint32 = number
 export type TestUint64 = number
 
 export type TestUint8 = number
+
+export type TestUintptr = any
 
 interface testStruct4NotExported {
 	exportMe: boolean

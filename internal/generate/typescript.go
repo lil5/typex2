@@ -81,8 +81,10 @@ func buildTypeAlias(name string) (string, string) {
 func getTypeContent(t types.Type, indent *int) string {
 	var s string
 	switch tt := t.(type) {
-	case *types.Interface, *types.Chan, *types.Signature:
-		s = "any"
+	case *types.Chan, *types.Signature:
+		s = "unknown"
+	case *types.Interface:
+		s = "Record<string, any>"
 	case *types.Basic:
 		s = getBasicType(tt)
 	case *types.Array:
@@ -191,7 +193,7 @@ func getBasicType(t *types.Basic) string {
 		return "string"
 	default:
 		fmt.Printf("basic t: %v\n", t.Info())
-		return "ANY"
+		return "any"
 	}
 }
 

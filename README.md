@@ -34,21 +34,22 @@ You should keep this in mind when working with exported numeric types - this inc
 
 |Go native type|TypeScript type
 | --- | ---
-|```bool```|```boolean```
-|```string```|```string```
-|```map```|```Record<K, V>```
-|```struct``` ```(named)```|```T```
-|```struct``` ```(anonymous)```|```{}```
-|```array``` ```(slice)```|```T[]```
-|```complex```[```64```&vert;```128```]|```any```
-|```chan```, ```func```, ```interface```|```any```
-|```int```[```8```&vert;```16```&vert;```32```&vert;```64```]|```number```
-|```uint```[```8```&vert;```16```&vert;```32```&vert;```64```]|```number```
-|```byte```(=```uint8```)|```number```
-|```rune```(=```int32```)|```number```
-|```float```[```32```&vert;```64```]|```number```
-|```uintptr```|```number```
-|```*```|```T \| null```
+|`bool`|`boolean`
+|`string`|`string`
+|`map`|`Record<K, V>`
+|`interface`|`Record<string, any>`
+|`struct` `(named)`|`T`
+|`struct` `(anonymous)`|`{}`
+|`array` `(slice)`|`T[]`
+|`complex`[`64`&vert;`128`]|`any`
+|`chan`, `func`, `interface`|`any`
+|`int`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`
+|`uint`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`
+|`byte`(=`uint8`)|`number`
+|`rune`(=`int32`)|`number`
+|`float`[`32`&vert;`64`]|`number`
+|`uintptr`|`any`
+|`*`|`T \| null`
 
 ## Differences between typex2 and typex
 
