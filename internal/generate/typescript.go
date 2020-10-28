@@ -169,25 +169,52 @@ func getNamedType(t *types.Named) string {
 }
 
 func getBasicType(t *types.Basic) string {
-	switch t.Info() {
-	case types.IsBoolean:
+	switch t.Kind() {
+	case types.Bool:
 		return "boolean"
-	case types.IsNumeric:
+	case types.Int,
+		types.Int8,
+		types.Int16,
+		types.Int32,
+		types.Int64,
+		types.Uint,
+		types.Uint8,
+		types.Uint16,
+		types.Uint32,
+		types.Uint64,
+		types.Float32,
+		types.Float64,
+		types.Complex64,
+		types.Complex128:
 		return "number"
-	case types.IsString:
+	case types.String:
 		return "string"
 	default:
-		return "any"
+		fmt.Printf("basic t: %v\n", t.Info())
+		return "ANY"
 	}
 }
 
 func getMapKey(t types.Type) string {
 	switch tt := t.(type) {
 	case *types.Basic:
-		switch tt.Info() {
-		case types.IsNumeric:
+		switch tt.Kind() {
+		case types.Int,
+			types.Int8,
+			types.Int16,
+			types.Int32,
+			types.Int64,
+			types.Uint,
+			types.Uint8,
+			types.Uint16,
+			types.Uint32,
+			types.Uint64,
+			types.Float32,
+			types.Float64,
+			types.Complex64,
+			types.Complex128:
 			return "number"
-		case types.IsString:
+		default:
 			return "string"
 		}
 	case *types.Map:
