@@ -48,6 +48,7 @@ You should keep this in mind when working with exported numeric types - this inc
 |```rune```(=```int32```)|```number```
 |```float```[```32```&vert;```64```]|```number```
 |```uintptr```|```number```
+|```*```|```T | null```
 
 ## Differences between typex2 and typex
 
