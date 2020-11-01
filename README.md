@@ -1,5 +1,6 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lil5/typex2/Go/master)](https://github.com/lil5/typex2/actions?query=workflow%3AGo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lil5/typex2)](https://goreportcard.com/report/github.com/lil5/typex2)
+[![Coverage Status](https://coveralls.io/repos/github/lil5/typex2/badge.svg?branch=master)](https://coveralls.io/github/lil5/typex2?branch=master)
 
 # TypeX 2
 
