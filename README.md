@@ -1,3 +1,5 @@
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lil5/typex2/Go/master)
+
 # TypeX 2
 
 Reads a go package's types and export them to typescript interfaces and basic types.
