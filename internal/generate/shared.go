@@ -6,17 +6,19 @@ import (
 	"strings"
 )
 
-func isTranslatable(t types.Type) bool {
+// Check if json has a type for t
+// and if it is worth getting the named type
+func IsTranslatable(t types.Type) bool {
 	switch t.(type) {
 	case *types.Chan, *types.Interface, *types.Signature:
 		return false
 	case *types.Named:
-		return isTranslatable(t.Underlying())
+		return IsTranslatable(t.Underlying())
 	}
 	return true
 }
 
-func getStructDeps(t *types.Struct) *[]string {
+func GetStructDeps(t *types.Struct) *[]string {
 	var deps []string
 	for i := 0; i < t.NumFields(); i++ {
 		fld := (*t).Field(i)
@@ -29,16 +31,16 @@ func getStructDeps(t *types.Struct) *[]string {
 	return &deps
 }
 
-func getName(p string) string {
+func GetName(p string) string {
 	i := strings.LastIndex(p, ".")
 	return p[i+1:]
 }
 
-func indentStr(indent *int) string {
+func IndentStr(indent *int) string {
 	return strings.Repeat("\t", *indent)
 }
 
-func getStructTagJSON(t *types.Struct, i int) string {
+func GetStructTagJSON(t *types.Struct, i int) string {
 	f := t.Field(i)
 	tag := f.Name()
 
@@ -47,7 +49,6 @@ func getStructTagJSON(t *types.Struct, i int) string {
 	if ok {
 		tag = tagJSON
 	}
-	// }
 
 	return tag
 }

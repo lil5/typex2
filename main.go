@@ -5,12 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/lil5/typex2/internal/write"
-
-	"github.com/lil5/typex2/internal/generate"
-
+	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
-
+	"github.com/lil5/typex2/internal/write"
 	"github.com/lil5/typex2/tools"
 
 	"github.com/urfave/cli/v2"
@@ -42,7 +39,7 @@ func main() {
 
 			st := read.MapPackage(pkg)
 
-			s, _ := generate.GenerateTypescript(st)
+			s, _ := typescript.GenerateTypescript(st)
 
 			err = write.FileWriter(path, "index.ts", s)
 			if err != nil {

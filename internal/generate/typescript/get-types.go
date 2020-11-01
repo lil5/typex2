@@ -1,82 +1,11 @@
-package generate
+package typescript
 
 import (
 	"fmt"
-	"go/token"
 	"go/types"
-	"sort"
-	"strings"
 
-	"github.com/lil5/typex2/internal/utils"
+	"github.com/lil5/typex2/internal/generate"
 )
-
-func GenerateTypescript(tm *utils.StructMap) (*string, error) {
-	if tm == nil {
-		return nil, fmt.Errorf("tm pointer is nil")
-	}
-
-	// sort map to help any vcs
-	keys := make([]string, 0, len(*tm))
-	for k := range *tm {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	var indent int
-	var s string
-	for _, n := range keys {
-		t := (*tm)[n]
-		indent = 1
-		if token.IsExported(n) {
-			s += "export "
-		}
-
-		switch tt := t.(type) {
-		case *types.Struct:
-			// generate type content
-			gc := getStructFields(tt, &indent)
-
-			// generate interface
-			deps := getStructDeps(tt)
-			gi1, gi2 := buildInterface(n, deps)
-			s += gi1 + gc + gi2
-		default:
-			// generate type content
-			gc := getTypeContent(tt, &indent)
-			// generate type alias
-			gt1, gt2 := buildTypeAlias(n)
-
-			s += gt1 + gc + gt2
-		}
-	}
-
-	return &s, nil
-}
-
-// run on type struct
-func buildInterface(name string, deps *[]string) (string, string) {
-	s := "interface " + name + " "
-
-	if deps != nil && len(*deps) > 0 {
-		s += "extends "
-		s += strings.Join(*deps, ", ")
-		s += " "
-	}
-
-	s += "{\n"
-	s2 := "}\n\n"
-
-	return s, s2
-}
-
-// TODO: add pointer check and run basic type or interface
-
-func buildTypeAlias(name string) (string, string) {
-	s1 := "type " + name + " = "
-
-	s2 := "\n\n"
-	return s1, s2
-}
 
 func getTypeContent(t types.Type, indent *int) string {
 	var s string
@@ -114,7 +43,7 @@ func getStructType(t *types.Struct, indent *int) string {
 	}
 	s := "{\n"
 	*indent = *indent + 1
-	s += indentStr(indent)
+	s += generate.IndentStr(indent)
 
 	for i := 0; i < t.NumFields(); i++ {
 
@@ -129,9 +58,9 @@ func getStructFields(t *types.Struct, indent *int) string {
 	for i := 0; i < t.NumFields(); i++ {
 		f := t.Field(i)
 		if !f.Anonymous() {
-			name := getStructTagJSON(t, i)
+			name := generate.GetStructTagJSON(t, i)
 
-			s += indentStr(indent)
+			s += generate.IndentStr(indent)
 			s += fmt.Sprintf("%s: ", name)
 			s += getTypeContent(f.Type(), indent)
 			s += "\n"
@@ -167,7 +96,7 @@ func getArrayType(t *types.Array, indent *int) string {
 }
 
 func getNamedType(t *types.Named) string {
-	return getName(t.String())
+	return generate.GetName(t.String())
 }
 
 func getBasicType(t *types.Basic) string {
