@@ -15,7 +15,7 @@ go get -u github.com/lil5/typex2
 ## Usage
 
 ```
-$ typex2 ./storage/
+$ typex2 ./storage
 ```
 
 This will do the following;
