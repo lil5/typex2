@@ -1,4 +1,4 @@
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lil5/typex2/Go/master)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lil5/typex2/Go/master)](https://github.com/lil5/typex2/actions?query=workflow%3AGo)
 
 # TypeX 2
 
