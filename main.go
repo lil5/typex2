@@ -22,16 +22,22 @@ func main() {
 			&cli.StringFlag{
 				Name:    "lang",
 				Value:   "typescript",
-				Aliases: []string{"l"},
-				Usage:   "Language to generate to.",
+				Aliases: []string{"l", "language"},
+				Usage:   "Language to generate to",
 			},
 		},
 		ArgsUsage: "path",
 		Action: func(c *cli.Context) error {
 			path := c.Args().First()
+			lang := c.String("lang")
 
 			if len(path) == 0 {
 				fmt.Println(tools.NoEntry + " No path given")
+				os.Exit(1)
+			}
+
+			if len(lang) == 0 {
+				fmt.Println(tools.NoEntry + " No language given")
 				os.Exit(1)
 			}
 
@@ -50,10 +56,13 @@ func main() {
 
 			var fname string
 			var s *string
-			switch c.String("lang") {
+			switch lang {
 			case utils.Typescript:
 				s, err = typescript.GenerateTypescript(st)
 				fname = "index.ts"
+			default:
+				fmt.Println(tools.NoEntry + " Incorrect Language given")
+				os.Exit(1)
 			}
 
 			if err != nil {
