@@ -1,4 +1,5 @@
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lil5/typex2/Go/master)](https://github.com/lil5/typex2/actions?query=workflow%3AGo)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lil5/typex2)](https://goreportcard.com/report/github.com/lil5/typex2)
 
 # TypeX 2
 
