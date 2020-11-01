@@ -3,6 +3,8 @@ package typescript
 import (
 	"strings"
 	"testing"
+
+	"github.com/lil5/typex2/internal/utils"
 )
 
 func TestBuidInterface(t *testing.T) {
@@ -11,21 +13,12 @@ func TestBuidInterface(t *testing.T) {
 	bi1, bi2 := buildInterface(name, &[]string{})
 
 	bi1MustContain := []string{name, "interface", "{"}
-	if !containsAll(bi1, bi1MustContain) {
+	if !utils.ContainsAll(bi1, bi1MustContain) {
 		t.Errorf("bi1 Does not contain %v", bi1MustContain)
 	}
 	if !strings.Contains(bi2, "}") {
 		t.Errorf("bi2 Does not contain %s", "}")
 	}
-}
-
-func containsAll(s string, substrs []string) bool {
-	ca := false
-	for i := 0; i < len(substrs) && !ca; i++ {
-		ca = strings.Contains(s, substrs[i])
-	}
-
-	return ca
 }
 
 func TestBuildTypeAlias(t *testing.T) {
@@ -34,7 +27,7 @@ func TestBuildTypeAlias(t *testing.T) {
 	bta1, _ := buildTypeAlias(name)
 
 	bta1MustContain := []string{name, "type", " = "}
-	if !containsAll(bta1, bta1MustContain) {
+	if !utils.ContainsAll(bta1, bta1MustContain) {
 		t.Errorf("bta1 Does not contain %v", bta1MustContain)
 	}
 }
