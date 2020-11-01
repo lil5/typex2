@@ -13,7 +13,7 @@ import (
 
 	"github.com/lil5/typex2/tools"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
