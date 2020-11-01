@@ -7,6 +7,7 @@ import (
 
 	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
+	"github.com/lil5/typex2/internal/utils"
 	"github.com/lil5/typex2/internal/write"
 	"github.com/lil5/typex2/tools"
 
@@ -15,8 +16,16 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:      "typex2",
-		Usage:     "Convert go structs to typescript interfaces",
+		Name:  "typex2",
+		Usage: "Convert go structs to typescript interfaces",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "lang",
+				Value:   "typescript",
+				Aliases: []string{"l"},
+				Usage:   "Language to generate to.",
+			},
+		},
 		ArgsUsage: "path",
 		Action: func(c *cli.Context) error {
 			path := c.Args().First()
@@ -39,9 +48,20 @@ func main() {
 
 			st := read.MapPackage(pkg)
 
-			s, _ := typescript.GenerateTypescript(st)
+			var fname string
+			var s *string
+			switch c.String("lang") {
+			case utils.Typescript:
+				s, err = typescript.GenerateTypescript(st)
+				fname = "index.ts"
+			}
 
-			err = write.FileWriter(path, "index.ts", s)
+			if err != nil {
+				fmt.Printf(tools.NoEntry + " Generate language failed")
+				return err
+			}
+
+			err = write.FileWriter(path, fname, s)
 			if err != nil {
 				fmt.Printf(tools.NoEntry+" Write to file unsuccessful: %v\n", err)
 				return err
