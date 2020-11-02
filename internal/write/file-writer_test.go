@@ -9,7 +9,7 @@ import (
 
 func TestFileWriter(t *testing.T) {
 	testString := "Lorem Ipsum"
-	path := "../../storage"
+	path := "../../examples"
 	fname := "test.ts"
 	err := FileWriter(path, fname, &testString)
 

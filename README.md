@@ -17,14 +17,14 @@ go get -u github.com/lil5/typex2
 ## Usage
 
 ```
-$ typex2 ./storage
+$ typex2 ./examples
 ```
 
 This will do the following;
 
 1. Read all go files inside the path specified (must use one [package name](https://blog.golang.org/package-names)).
 2. Generate typescript [types](https://www.typescriptlang.org/docs/handbook/basic-types.html) and [interfaces](https://www.typescriptlang.org/docs/handbook/interfaces.html) from said go files.
-3. Write generated content into `./storage/index.ts`.
+3. Write generated content into `./examples/index.ts`.
 
 ## TypeScript type mapping
 
