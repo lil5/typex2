@@ -21,6 +21,19 @@ func TestBuidInterface(t *testing.T) {
 	}
 }
 
+func TestBuidInterfaceWithExtends(t *testing.T) {
+	name := "Lorem"
+	extends := []string{"Ipsum", "Dolor"}
+
+	sut1, _ := buildInterface(name, &extends)
+
+	mustContain := append(extends, "extends")
+
+	if !utils.ContainsAll(sut1, mustContain) {
+		t.Errorf("Does not contain extended values")
+	}
+}
+
 func TestBuildTypeAlias(t *testing.T) {
 	name := "Lorem"
 
