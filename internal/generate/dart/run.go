@@ -21,22 +21,23 @@ func GenerateDart(tm *utils.StructMap) (*string, error) {
 	}
 	sort.Strings(keys)
 
+	var indent int
 	var s string
 	for _, n := range keys {
 		t := (*tm)[n]
+		indent = 1
 		switch tt := t.(type) {
 		case *types.Struct:
 			// generate type content
-			gc := ""
-			//gc := getStructFields(tt, &indent)
+			gc := getClassFields(tt, &indent)
 
-			// generate interface
+			// generate class
 			dep, _ := generate.GetClassDeps(tt, false)
 			gc1, gc2 := buildClass(n, dep)
 			s += gc1 + gc + gc2
 		default:
 			// // generate type content
-			// gc := getTypeContent(tt, &indent)
+			// gc := getTypeContent(tt)
 			// // generate type alias
 			// gt1, gt2 := buildTypeAlias(n)
 

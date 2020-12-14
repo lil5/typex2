@@ -1,17 +1,29 @@
 package dart
 
 import (
+	"fmt"
 	"go/types"
 
 	"github.com/lil5/typex2/internal/generate"
 )
 
-type Names = struct {
-	class string
-	key   string
+func getClassFields(t *types.Struct, indent *int) string {
+	if t.NumFields() == 0 {
+		return ""
+	}
+	*indent = *indent + 1
+	s := generate.IndentStr(indent)
+
+	for i := 0; i < t.NumFields(); i++ {
+		field := t.Field(i)
+		s += field.Name() + " " + getTypeContent(field.Type()) + ";\n"
+	}
+	*indent = *indent - 1
+	return s
 }
 
-func getTypeContent(t types.Type, names *Names) string {
+func getTypeContent(t types.Type) string {
+	fmt.Printf("%v\n\n", t.String())
 	var s string
 	switch tt := t.(type) {
 	case *types.Chan, *types.Signature:
@@ -21,15 +33,15 @@ func getTypeContent(t types.Type, names *Names) string {
 	case *types.Basic:
 		s = getBasicType(tt)
 	case *types.Array:
-		s = getArrayType(tt, names)
+		s = getArrayType(tt)
 	case *types.Slice:
-		s = getSliceType(tt, names)
+		s = getSliceType(tt)
 	case *types.Map:
-		s = getMapType(tt, names)
+		s = getMapType(tt)
 	case *types.Named:
 		s = getNamedType(tt)
 	case *types.Pointer:
-		s = getTypeContent(tt.Elem(), names)
+		s = getTypeContent(tt.Elem())
 		s += "?"
 	//case *types.Struct:
 	// recursivily create classes
@@ -42,28 +54,28 @@ func getTypeContent(t types.Type, names *Names) string {
 	return s
 }
 
-func getMapType(t *types.Map, names *Names) string {
+func getMapType(t *types.Map) string {
 	s := "Map<"
 
 	s += getMapKey(t.Key())
 	s += ", "
-	s += getTypeContent(t.Elem(), names)
+	s += getTypeContent(t.Elem())
 	s += ">"
 
 	return s
 }
 
-func getArrayType(t *types.Array, names *Names) string {
+func getArrayType(t *types.Array) string {
 	s := "List<"
-	s += getTypeContent(t.Elem(), names)
+	s += getTypeContent(t.Elem())
 	s += ">"
 
 	return s
 }
 
-func getSliceType(t *types.Slice, names *Names) string {
+func getSliceType(t *types.Slice) string {
 	s := "List<"
-	s += getTypeContent(t.Elem(), names)
+	s += getTypeContent(t.Elem())
 	s += ">"
 
 	return s
@@ -74,6 +86,7 @@ func getNamedType(t *types.Named) string {
 }
 
 func getBasicType(t *types.Basic) string {
+	fmt.Printf("t: %v\n", t)
 	switch t.Kind() {
 	case types.Bool:
 		return "bool"
