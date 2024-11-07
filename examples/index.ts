@@ -59,6 +59,13 @@ export interface TestStruct5UsePackage {
 	notExp: testStruct4NotExported
 }
 
+export interface TestStruct6NamedOmitempty {
+	one?: string
+}
+
+export interface TestStruct7NamedOmit {
+}
+
 export type TestUint = number
 
 export type TestUint16 = number

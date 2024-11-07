@@ -53,7 +53,7 @@ data class TestStruct1 (
 
 @Serializable
 data class TestStruct2Named (
-	val Two: String,
+	val two: String,
 )
 
 @Serializable
@@ -63,7 +63,16 @@ data class TestStruct3Extend: TestStruct1 (
 
 @Serializable
 data class TestStruct5UsePackage (
-	val ValNotExp: testStruct4NotExported,
+	val notExp: testStruct4NotExported,
+)
+
+@Serializable
+data class TestStruct6NamedOmitempty (
+	val one: String?,
+)
+
+@Serializable
+data class TestStruct7NamedOmit (
 )
 
 typealias TestUint = Int
@@ -80,6 +89,6 @@ typealias TestUintptr = Any
 
 @Serializable
 data class testStruct4NotExported (
-	val ExportMe: Boolean,
+	val exportMe: Boolean,
 )
 

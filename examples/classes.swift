@@ -47,7 +47,7 @@ class TestStruct1 {
 }
 
 class TestStruct2Named {
-	Two String;
+	two String;
 }
 
 class TestStruct3Extend: TestStruct1 {
@@ -55,7 +55,14 @@ class TestStruct3Extend: TestStruct1 {
 }
 
 class TestStruct5UsePackage {
-	ValNotExp testStruct4NotExported;
+	notExp testStruct4NotExported;
+}
+
+class TestStruct6NamedOmitempty {
+	one String?;
+}
+
+class TestStruct7NamedOmit {
 }
 
 typealias TestUint = Int
@@ -71,6 +78,6 @@ typealias TestUint8 = Int
 typealias TestUintptr = Any
 
 class testStruct4NotExported {
-	ExportMe Bool;
+	exportMe Bool;
 }
 

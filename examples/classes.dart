@@ -47,7 +47,7 @@ class TestStruct1 {
 }
 
 class TestStruct2Named {
-	Two String;
+	two String;
 }
 
 class TestStruct3Extend extends TestStruct1 {
@@ -55,7 +55,14 @@ class TestStruct3Extend extends TestStruct1 {
 }
 
 class TestStruct5UsePackage {
-	ValNotExp testStruct4NotExported;
+	notExp testStruct4NotExported;
+}
+
+class TestStruct6NamedOmitempty {
+	one String?;
+}
+
+class TestStruct7NamedOmit {
 }
 
 typedef TestUint = int
@@ -71,6 +78,6 @@ typedef TestUint8 = int
 typedef TestUintptr = dynamic
 
 class testStruct4NotExported {
-	ExportMe bool;
+	exportMe bool;
 }
 

@@ -14,9 +14,18 @@ func getClassFields(t *types.Struct, indent int) string {
 	var s string
 	indent += 1
 	for i := 0; i < t.NumFields(); i++ {
-		s = generate.IndentStr(indent)
 		field := t.Field(i)
-		s += "val " + field.Name() + ": " + getTypeContent(field.Type()) + ",\n"
+		tag, omitempty := generate.GetStructTagJSON(t, i)
+		if tag == "-" {
+			continue
+		}
+		t := field.Type()
+		if omitempty {
+			t = generate.TurnTypeOptional(t)
+		}
+		s = generate.IndentStr(indent)
+		s += "val " + tag + ": " + getTypeContent(t)
+		s += ",\n"
 	}
 	return s
 }

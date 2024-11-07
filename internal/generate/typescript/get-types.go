@@ -29,7 +29,7 @@ func getTypeContent(t types.Type, indent int) string {
 	case *types.Slice:
 		s = getSliceType(tt, indent)
 	case *types.Struct:
-		s = getStructType(tt, indent)
+		s = getStructFields(tt, indent)
 	default:
 		s = "unknown"
 	}
@@ -37,31 +37,39 @@ func getTypeContent(t types.Type, indent int) string {
 	return s
 }
 
-func getStructType(t *types.Struct, indent int) string {
-	if t.NumFields() == 0 {
-		return "{}"
-	}
-	s := "{\n"
-	indent = indent + 1
-	s += generate.IndentStr(indent)
-
-	for i := 0; i < t.NumFields(); i++ {
-
-	}
-	s += "}"
-	return s
-}
+// func getStructType(t *types.Struct, indent int) string {
+// 	if t.NumFields() == 0 {
+// 		return "{}"
+// 	}
+// 	s := "{\n"
+// 	indent = indent + 1
+// 	s += generate.IndentStr(indent)
+// 	for i := 0; i < t.NumFields(); i++ {
+// 	}
+// 	s += "}"
+// 	return s
+// }
 
 func getStructFields(t *types.Struct, indent int) string {
 	s := ""
 	for i := 0; i < t.NumFields(); i++ {
-		f := t.Field(i)
-		if !f.Anonymous() {
-			name := generate.GetStructTagJSON(t, i)
-
+		field := t.Field(i)
+		if !field.Anonymous() {
+			tag, omitempty := generate.GetStructTagJSON(t, i)
+			if tag == "-" {
+				continue
+			}
+			t := field.Type()
+			if omitempty {
+				t = generate.TurnTypeOptional(t)
+			}
 			s += generate.IndentStr(indent)
-			s += fmt.Sprintf("%s: ", name)
-			s += getTypeContent(f.Type(), indent)
+			if omitempty {
+				s += fmt.Sprintf("%s?: ", tag)
+			} else {
+				s += fmt.Sprintf("%s: ", tag)
+			}
+			s += getTypeContent(field.Type(), indent)
 			s += "\n"
 		}
 	}

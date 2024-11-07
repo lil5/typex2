@@ -40,15 +40,26 @@ func IndentStr(indent int) string {
 	return strings.Repeat("\t", indent)
 }
 
-func GetStructTagJSON(t *types.Struct, i int) string {
+func GetStructTagJSON(t *types.Struct, i int) (tag string, omitempty bool) {
 	f := t.Field(i)
-	tag := f.Name()
+	tag = f.Name()
 
 	st := reflect.StructTag(t.Tag(i))
 	tagJSON, ok := st.Lookup("json")
-	if ok {
-		tag = tagJSON
+	if ok && tagJSON != "" {
+		tagSplit := strings.Split(tagJSON, ",")
+		omitempty = strings.Contains(tagJSON, "omitempty")
+		tag = tagSplit[0]
 	}
 
-	return tag
+	return tag, omitempty
+}
+
+func TurnTypeOptional(t types.Type) types.Type {
+	switch t.(type) {
+	case *types.Pointer:
+		return t
+	default:
+		return types.NewPointer(t)
+	}
 }

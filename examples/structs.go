@@ -22,3 +22,11 @@ type TestStruct5UsePackage struct {
 	MyInt     TestInt                `json:"myInt"`
 	ValNotExp testStruct4NotExported `json:"notExp"`
 }
+
+type TestStruct6NamedOmitempty struct {
+	One string `json:"one,omitempty"`
+}
+
+type TestStruct7NamedOmit struct {
+	One string `json:"-"`
+}
