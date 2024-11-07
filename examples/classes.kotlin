@@ -75,6 +75,11 @@ data class TestStruct6NamedOmitempty (
 data class TestStruct7NamedOmit (
 )
 
+@Serializable
+data class TestStruct8Time (
+	val createdAt: String,
+)
+
 typealias TestUint = Int
 
 typealias TestUint16 = Int

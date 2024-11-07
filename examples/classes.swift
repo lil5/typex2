@@ -65,6 +65,10 @@ class TestStruct6NamedOmitempty {
 class TestStruct7NamedOmit {
 }
 
+class TestStruct8Time {
+	createdAt Time;
+}
+
 typealias TestUint = Int
 
 typealias TestUint16 = Int

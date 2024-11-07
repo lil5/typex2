@@ -8,6 +8,7 @@ import (
 )
 
 func getTypeContent(t types.Type, indent int) string {
+	// fmt.Printf("%v\n\n", t.String())
 	var s string
 	switch tt := t.(type) {
 	case *types.Chan, *types.Signature:
@@ -103,7 +104,13 @@ func getArrayType(t *types.Array, indent int) string {
 }
 
 func getNamedType(t *types.Named) string {
-	return generate.GetName(t.String())
+	s := t.String()
+	switch s {
+	case "time.Time":
+		return "string"
+	}
+
+	return generate.GetName(s)
 }
 
 func getBasicType(t *types.Basic) string {

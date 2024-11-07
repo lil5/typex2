@@ -1,7 +1,6 @@
 package dart
 
 import (
-	"fmt"
 	"go/types"
 
 	"github.com/lil5/typex2/internal/generate"
@@ -30,7 +29,6 @@ func getClassFields(t *types.Struct, indent int) string {
 }
 
 func getTypeContent(t types.Type) string {
-	fmt.Printf("%v\n\n", t.String())
 	var s string
 	switch tt := t.(type) {
 	case *types.Chan, *types.Signature:
@@ -46,6 +44,7 @@ func getTypeContent(t types.Type) string {
 	case *types.Map:
 		s = getMapType(tt)
 	case *types.Named:
+		// fmt.Printf("'%v'\n\n", tt.String())
 		s = getNamedType(tt)
 	case *types.Pointer:
 		s = getTypeContent(tt.Elem())
@@ -89,11 +88,16 @@ func getSliceType(t *types.Slice) string {
 }
 
 func getNamedType(t *types.Named) string {
-	return generate.GetName(t.String())
+	s := t.String()
+	switch s {
+	case "time.Time":
+		return "String"
+	}
+	return generate.GetName(s)
 }
 
 func getBasicType(t *types.Basic) string {
-	fmt.Printf("t: %v\n", t)
+	// fmt.Printf("t: %v\n", t)
 	switch t.Kind() {
 	case types.Bool:
 		return "bool"

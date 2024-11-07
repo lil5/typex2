@@ -65,6 +65,10 @@ class TestStruct6NamedOmitempty {
 class TestStruct7NamedOmit {
 }
 
+class TestStruct8Time {
+	createdAt String;
+}
+
 typedef TestUint = int
 
 typedef TestUint16 = int

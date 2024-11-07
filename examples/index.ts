@@ -66,6 +66,10 @@ export interface TestStruct6NamedOmitempty {
 export interface TestStruct7NamedOmit {
 }
 
+export interface TestStruct8Time {
+	createdAt: string
+}
+
 export type TestUint = number
 
 export type TestUint16 = number

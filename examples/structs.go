@@ -1,5 +1,7 @@
 package storage
 
+import "time"
+
 type TestStruct1 struct {
 	One map[string]string
 }
@@ -29,4 +31,8 @@ type TestStruct6NamedOmitempty struct {
 
 type TestStruct7NamedOmit struct {
 	One string `json:"-"`
+}
+
+type TestStruct8Time struct {
+	CreatedAt time.Time `json:"createdAt"`
 }

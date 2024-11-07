@@ -5,9 +5,8 @@ tasks:
   coverage: go test -v -coverprofile=profile.cov ./...
   build: go build -o typex2
   examples:
-    cmds:
-      - task: build
-      - ./typex2 -l typescript ./examples
-      - ./typex2 -l dart ./examples
-      - ./typex2 -l swift ./examples
-      - ./typex2 -l kotlin ./examples
+    - task: build
+    - ./typex2 -l typescript ./examples
+    - ./typex2 -l dart ./examples
+    - ./typex2 -l swift ./examples
+    - ./typex2 -l kotlin ./examples
