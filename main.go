@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/lil5/typex2/internal/generate/dart"
+	"github.com/lil5/typex2/internal/generate/swift"
 	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
 	"github.com/lil5/typex2/internal/utils"
@@ -97,6 +98,9 @@ func runLanguage(st *utils.StructMap, lang string) (*string, string, error) {
 	case utils.Dart:
 		s, err = dart.GenerateDart(st)
 		fname = "classes.dart"
+	case utils.Swift:
+		s, err = swift.GenerateSwift(st)
+		fname = "classes.swift"
 	default:
 		fmt.Println(tools.NoEntry + " Incorrect Language given")
 		os.Exit(1)

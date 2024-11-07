@@ -8,3 +8,4 @@ tasks:
       - task: build
       - ./typex2 -l typescript ./examples
       - ./typex2 -l dart ./examples
+      - ./typex2 -l swift ./examples
