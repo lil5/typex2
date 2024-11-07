@@ -11,7 +11,7 @@ This is the follow up of https://github.com/dtgorski/typex
 ## Installation
 
 ```
-go install github.com/lil5/typex2@1.1.0
+go install github.com/lil5/typex2@1.1.1
 ```
 
 ## Usage
