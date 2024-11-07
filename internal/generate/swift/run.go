@@ -1,8 +1,7 @@
-package typescript
+package swift
 
 import (
 	"fmt"
-	"go/token"
 	"go/types"
 	"sort"
 
@@ -10,7 +9,7 @@ import (
 	"github.com/lil5/typex2/internal/utils"
 )
 
-func GenerateTypescript(tm *utils.StructMap) (*string, error) {
+func GenerateSwift(tm *utils.StructMap) (*string, error) {
 	if tm == nil {
 		return nil, fmt.Errorf("tm pointer is nil")
 	}
@@ -26,24 +25,20 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 	var s string
 	for _, n := range keys {
 		t := (*tm)[n]
-		indent = 1
-		if token.IsExported(n) {
-			s += "export "
-		}
-
+		indent = 0
 		switch tt := t.(type) {
 		case *types.Struct:
 			// generate type content
-			gc := getStructFields(tt, indent)
+			gc := getClassFields(tt, indent)
 
-			// generate interface
-			deps := generate.GetStructDeps(tt)
-			gi1, gi2 := buildInterface(n, deps)
-			s += gi1 + gc + gi2
+			// generate class
+			dep, _ := generate.GetClassDeps(tt, false)
+			gc1, gc2 := buildClass(n, dep)
+			s += gc1 + gc + gc2
 		default:
-			// generate type content
-			gc := getTypeContent(tt, indent)
-			// generate type alias
+			// // generate type content
+			gc := getTypeContent(tt)
+			// // generate type alias
 			gt1, gt2 := buildTypeAlias(n)
 
 			s += gt1 + gc + gt2

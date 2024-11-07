@@ -5,6 +5,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/lil5/typex2/internal/generate/dart"
+	"github.com/lil5/typex2/internal/generate/kotlin"
+	"github.com/lil5/typex2/internal/generate/swift"
 	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
 	"github.com/lil5/typex2/internal/utils"
@@ -54,16 +57,7 @@ func main() {
 
 			st := read.MapPackage(pkg)
 
-			var fname string
-			var s *string
-			switch lang {
-			case utils.Typescript:
-				s, err = typescript.GenerateTypescript(st)
-				fname = "index.ts"
-			default:
-				fmt.Println(tools.NoEntry + " Incorrect Language given")
-				os.Exit(1)
-			}
+			s, fname, err := runLanguage(st, lang)
 
 			if err != nil {
 				fmt.Printf(tools.NoEntry + " Generate language failed")
@@ -92,4 +86,29 @@ func checkIfDirExists(path string) bool {
 	stat, err := os.Stat(path)
 
 	return err == nil && stat.IsDir()
+}
+
+func runLanguage(st *utils.StructMap, lang string) (*string, string, error) {
+	var fname string
+	var err error
+	var s *string
+	switch lang {
+	case utils.Typescript:
+		s, err = typescript.GenerateTypescript(st)
+		fname = "index.ts"
+	case utils.Dart:
+		s, err = dart.GenerateDart(st)
+		fname = "classes.dart"
+	case utils.Swift:
+		s, err = swift.GenerateSwift(st)
+		fname = "classes.swift"
+	case utils.Kotlin:
+		s, err = kotlin.GenerateKotlin(st)
+		fname = "classes.kotlin"
+	default:
+		fmt.Println(tools.NoEntry + " Incorrect Language given")
+		os.Exit(1)
+	}
+
+	return s, fname, err
 }

@@ -1,0 +1,85 @@
+import kotlinx.serialization.*
+import kotlinx.serialization.json.Json
+
+typealias TestBool = Boolean
+
+typealias TestByte = Int
+
+typealias TestBytes = Array<Int>
+
+typealias TestChan = Any
+
+typealias TestFloat32 = Float
+
+typealias TestFloat64 = Double
+
+typealias TestFunc = Any
+
+typealias TestInt = Int
+
+typealias TestInt16 = Int
+
+typealias TestInt32 = Int
+
+typealias TestInt64 = Int
+
+typealias TestInt8 = Int
+
+typealias TestInterface = Map<String, Any>
+
+typealias TestMap = Map<String, String>
+
+typealias TestMapInt = Map<Int, String>
+
+typealias TestPointer = String?
+
+@Serializable
+data class TestPointerStruct (
+	val PP: String?,
+)
+
+typealias TestRune = Int
+
+typealias TestSliceSlice = Array<TestSliceString>
+
+typealias TestSliceString = Array<String>
+
+typealias TestString = String
+
+@Serializable
+data class TestStruct1 (
+	val One: Map<String, String>,
+)
+
+@Serializable
+data class TestStruct2Named (
+	val Two: String,
+)
+
+@Serializable
+data class TestStruct3Extend: TestStruct1 (
+	val TestStruct2Named: TestStruct2Named,
+)
+
+@Serializable
+data class TestStruct5UsePackage (
+	val ValNotExp: testStruct4NotExported,
+)
+
+typealias TestUint = Int
+
+typealias TestUint16 = Int
+
+typealias TestUint32 = Int
+
+typealias TestUint64 = Int
+
+typealias TestUint8 = Int
+
+typealias TestUintptr = Any
+
+@Serializable
+data class testStruct4NotExported (
+	val ExportMe: Boolean,
+)
+

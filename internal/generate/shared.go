@@ -36,8 +36,8 @@ func GetName(p string) string {
 	return p[i+1:]
 }
 
-func IndentStr(indent *int) string {
-	return strings.Repeat("\t", *indent)
+func IndentStr(indent int) string {
+	return strings.Repeat("\t", indent)
 }
 
 func GetStructTagJSON(t *types.Struct, i int) string {
