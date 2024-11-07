@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/lil5/typex2/internal/generate/dart"
+	"github.com/lil5/typex2/internal/generate/kotlin"
 	"github.com/lil5/typex2/internal/generate/swift"
 	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
@@ -101,6 +102,9 @@ func runLanguage(st *utils.StructMap, lang string) (*string, string, error) {
 	case utils.Swift:
 		s, err = swift.GenerateSwift(st)
 		fname = "classes.swift"
+	case utils.Kotlin:
+		s, err = kotlin.GenerateKotlin(st)
+		fname = "classes.kotlin"
 	default:
 		fmt.Println(tools.NoEntry + " Incorrect Language given")
 		os.Exit(1)

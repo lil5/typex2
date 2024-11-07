@@ -1,4 +1,4 @@
-package swift
+package kotlin
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ func getClassFields(t *types.Struct, indent int) string {
 	for i := 0; i < t.NumFields(); i++ {
 		s = generate.IndentStr(indent)
 		field := t.Field(i)
-		s += field.Name() + " " + getTypeContent(field.Type()) + ";\n"
+		s += "val " + field.Name() + ": " + getTypeContent(field.Type()) + ",\n"
 	}
 	return s
 }
@@ -28,7 +28,7 @@ func getTypeContent(t types.Type) string {
 	case *types.Chan, *types.Signature:
 		s = "Any"
 	case *types.Interface:
-		s = "Dictionary<String, Any>"
+		s = "Map<String, Any>"
 	case *types.Basic:
 		s = getBasicType(tt)
 	case *types.Array:
@@ -54,7 +54,7 @@ func getTypeContent(t types.Type) string {
 }
 
 func getMapType(t *types.Map) string {
-	s := "Dictionary<"
+	s := "Map<"
 
 	s += getMapKey(t.Key())
 	s += ", "
@@ -88,7 +88,7 @@ func getBasicType(t *types.Basic) string {
 	fmt.Printf("t: %v\n", t)
 	switch t.Kind() {
 	case types.Bool:
-		return "Bool"
+		return "Boolean"
 	case types.Int,
 		types.Int8,
 		types.Int16,
