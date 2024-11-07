@@ -12,7 +12,7 @@ func TestGetTypeContent(t *testing.T) {
 	indent := 0
 
 	for name, tt := range *sut {
-		ttContent := getTypeContent(tt, &indent)
+		ttContent := getTypeContent(tt, indent)
 
 		hasAll := utils.ContainsAll(*result, []string{ttContent, name})
 

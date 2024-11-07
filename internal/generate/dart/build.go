@@ -13,3 +13,10 @@ func buildClass(name string, dep string) (string, string) {
 
 	return s1, s2
 }
+
+func buildTypeAlias(name string) (string, string) {
+	s1 := "typedef " + name + " = "
+
+	s2 := "\n\n"
+	return s1, s2
+}

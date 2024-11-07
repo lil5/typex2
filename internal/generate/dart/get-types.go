@@ -7,18 +7,17 @@ import (
 	"github.com/lil5/typex2/internal/generate"
 )
 
-func getClassFields(t *types.Struct, indent *int) string {
+func getClassFields(t *types.Struct, indent int) string {
 	if t.NumFields() == 0 {
 		return ""
 	}
-	*indent = *indent + 1
-	s := generate.IndentStr(indent)
-
+	var s string
+	indent += 1
 	for i := 0; i < t.NumFields(); i++ {
+		s = generate.IndentStr(indent)
 		field := t.Field(i)
 		s += field.Name() + " " + getTypeContent(field.Type()) + ";\n"
 	}
-	*indent = *indent - 1
 	return s
 }
 

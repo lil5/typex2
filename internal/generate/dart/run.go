@@ -25,11 +25,11 @@ func GenerateDart(tm *utils.StructMap) (*string, error) {
 	var s string
 	for _, n := range keys {
 		t := (*tm)[n]
-		indent = 1
+		indent = 0
 		switch tt := t.(type) {
 		case *types.Struct:
 			// generate type content
-			gc := getClassFields(tt, &indent)
+			gc := getClassFields(tt, indent)
 
 			// generate class
 			dep, _ := generate.GetClassDeps(tt, false)
@@ -37,11 +37,11 @@ func GenerateDart(tm *utils.StructMap) (*string, error) {
 			s += gc1 + gc + gc2
 		default:
 			// // generate type content
-			// gc := getTypeContent(tt)
+			gc := getTypeContent(tt)
 			// // generate type alias
-			// gt1, gt2 := buildTypeAlias(n)
+			gt1, gt2 := buildTypeAlias(n)
 
-			// s += gt1 + gc + gt2
+			s += gt1 + gc + gt2
 		}
 	}
 

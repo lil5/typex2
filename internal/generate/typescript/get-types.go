@@ -7,7 +7,7 @@ import (
 	"github.com/lil5/typex2/internal/generate"
 )
 
-func getTypeContent(t types.Type, indent *int) string {
+func getTypeContent(t types.Type, indent int) string {
 	var s string
 	switch tt := t.(type) {
 	case *types.Chan, *types.Signature:
@@ -37,23 +37,23 @@ func getTypeContent(t types.Type, indent *int) string {
 	return s
 }
 
-func getStructType(t *types.Struct, indent *int) string {
+func getStructType(t *types.Struct, indent int) string {
 	if t.NumFields() == 0 {
 		return "{}"
 	}
 	s := "{\n"
-	*indent = *indent + 1
+	indent = indent + 1
 	s += generate.IndentStr(indent)
 
 	for i := 0; i < t.NumFields(); i++ {
 
 	}
-	*indent = *indent - 1
+	indent = indent - 1
 	s += "}"
 	return s
 }
 
-func getStructFields(t *types.Struct, indent *int) string {
+func getStructFields(t *types.Struct, indent int) string {
 	s := ""
 	for i := 0; i < t.NumFields(); i++ {
 		f := t.Field(i)
@@ -70,7 +70,7 @@ func getStructFields(t *types.Struct, indent *int) string {
 	return s
 }
 
-func getMapType(t *types.Map, indent *int) string {
+func getMapType(t *types.Map, indent int) string {
 	s := "Record<"
 
 	s += getMapKey(t.Key())
@@ -81,14 +81,14 @@ func getMapType(t *types.Map, indent *int) string {
 	return s
 }
 
-func getSliceType(t *types.Slice, indent *int) string {
+func getSliceType(t *types.Slice, indent int) string {
 	s := getTypeContent(t.Elem(), indent)
 	s += "[]"
 
 	return s
 }
 
-func getArrayType(t *types.Array, indent *int) string {
+func getArrayType(t *types.Array, indent int) string {
 	s := getTypeContent(t.Elem(), indent)
 	s += fmt.Sprintf("[/* %d */]", t.Len())
 

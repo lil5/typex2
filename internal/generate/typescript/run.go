@@ -34,7 +34,7 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 		switch tt := t.(type) {
 		case *types.Struct:
 			// generate type content
-			gc := getStructFields(tt, &indent)
+			gc := getStructFields(tt, indent)
 
 			// generate interface
 			deps := generate.GetStructDeps(tt)
@@ -42,7 +42,7 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 			s += gi1 + gc + gi2
 		default:
 			// generate type content
-			gc := getTypeContent(tt, &indent)
+			gc := getTypeContent(tt, indent)
 			// generate type alias
 			gt1, gt2 := buildTypeAlias(n)
 
