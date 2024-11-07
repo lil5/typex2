@@ -2,6 +2,7 @@ version: "3"
 
 tasks:
   test: go test ./...
+  coverage: go test -v -coverprofile=profile.cov ./...
   build: go build -o typex2
   examples:
     cmds:

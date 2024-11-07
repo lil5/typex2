@@ -2,7 +2,6 @@ package write
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -16,16 +15,16 @@ func TestFileWriter(t *testing.T) {
 	if err != nil {
 		msg := fmt.Sprintf("Could not write to file path. %v", err)
 		fmt.Println(msg)
-		t.Errorf(msg)
+		t.Error(msg)
 	}
 
 	fullpath := path + "/" + fname
-	d, err := ioutil.ReadFile(fullpath)
+	d, err := os.ReadFile(fullpath)
 
 	if err != nil {
 		msg := "Could not read test file."
 		fmt.Println(msg)
-		t.Errorf(msg)
+		t.Error(msg)
 	}
 
 	contents := string(d)
@@ -38,6 +37,6 @@ func TestFileWriter(t *testing.T) {
 	if err != nil {
 		msg := "Could not remove test file."
 		fmt.Println(msg)
-		t.Errorf(msg)
+		t.Error(msg)
 	}
 }

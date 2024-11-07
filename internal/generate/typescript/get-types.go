@@ -48,7 +48,6 @@ func getStructType(t *types.Struct, indent int) string {
 	for i := 0; i < t.NumFields(); i++ {
 
 	}
-	indent = indent - 1
 	s += "}"
 	return s
 }

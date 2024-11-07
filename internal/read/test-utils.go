@@ -1,14 +1,14 @@
 package read
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/lil5/typex2/internal/utils"
 )
 
 func GetSut(t *testing.T, path string, fname string) (*utils.StructMap, *string) {
-	data, err := ioutil.ReadFile(path + "/" + fname)
+	data, err := os.ReadFile(path + "/" + fname)
 
 	if err != nil {
 		t.FailNow()
