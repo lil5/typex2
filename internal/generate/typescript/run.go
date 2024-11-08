@@ -5,12 +5,13 @@ import (
 	"go/token"
 	"go/types"
 	"sort"
+	"strings"
 
 	"github.com/lil5/typex2/internal/generate"
 	"github.com/lil5/typex2/internal/utils"
 )
 
-func GenerateTypescript(tm *utils.StructMap) (*string, error) {
+func GenerateTypescript(tm *utils.StructMap) (*strings.Builder, error) {
 	if tm == nil {
 		return nil, fmt.Errorf("tm pointer is nil")
 	}
@@ -23,12 +24,12 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 	sort.Strings(keys)
 
 	var indent int
-	var s string
+	var s strings.Builder
 	for _, n := range keys {
 		t := (*tm)[n]
 		indent = 1
 		if token.IsExported(n) {
-			s += "export "
+			s.WriteString("export ")
 		}
 
 		switch tt := t.(type) {
@@ -39,14 +40,14 @@ func GenerateTypescript(tm *utils.StructMap) (*string, error) {
 			// generate interface
 			deps := generate.GetStructDeps(tt)
 			gi1, gi2 := buildInterface(n, deps)
-			s += gi1 + gc + gi2
+			s.WriteString(gi1 + gc + gi2)
 		default:
 			// generate type content
 			gc := getTypeContent(tt, indent)
 			// generate type alias
 			gt1, gt2 := buildTypeAlias(n)
 
-			s += gt1 + gc + gt2
+			s.WriteString(gt1 + gc + gt2)
 		}
 	}
 

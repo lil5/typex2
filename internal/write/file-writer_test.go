@@ -8,9 +8,8 @@ import (
 
 func TestFileWriter(t *testing.T) {
 	testString := "Lorem Ipsum"
-	path := "../../examples"
-	fname := "test.ts"
-	err := FileWriter(path, fname, &testString)
+	path := "../../examples/test.ts"
+	err := FileWriter(path, testString)
 
 	if err != nil {
 		msg := fmt.Sprintf("Could not write to file path. %v", err)
@@ -18,8 +17,7 @@ func TestFileWriter(t *testing.T) {
 		t.Error(msg)
 	}
 
-	fullpath := path + "/" + fname
-	d, err := os.ReadFile(fullpath)
+	d, err := os.ReadFile(path)
 
 	if err != nil {
 		msg := "Could not read test file."
@@ -33,7 +31,7 @@ func TestFileWriter(t *testing.T) {
 		t.Fail()
 	}
 
-	err = os.Remove(fullpath)
+	err = os.Remove(path)
 	if err != nil {
 		msg := "Could not remove test file."
 		fmt.Println(msg)

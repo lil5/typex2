@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetTypeContent(t *testing.T) {
-	sut, result := read.GetSut(t, "../../../examples", "index.ts")
+	sut, result := read.GetSut(t, "../../../examples", "typex2.ts")
 	indent := 0
 
 	for name, tt := range *sut {

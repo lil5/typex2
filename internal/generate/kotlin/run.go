@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"go/types"
 	"sort"
+	"strings"
 
 	"github.com/lil5/typex2/internal/generate"
 	"github.com/lil5/typex2/internal/utils"
 )
 
-func GenerateKotlin(tm *utils.StructMap) (*string, error) {
+func GenerateKotlin(tm *utils.StructMap) (*strings.Builder, error) {
 	if tm == nil {
 		return nil, fmt.Errorf("tm pointer is nil")
 	}
@@ -22,10 +23,10 @@ func GenerateKotlin(tm *utils.StructMap) (*string, error) {
 	sort.Strings(keys)
 
 	var indent int
-	var s string
+	var s strings.Builder
 
 	// add imports
-	s += "import kotlinx.serialization.*\nimport kotlinx.serialization.json.Json\n\n"
+	s.WriteString("import kotlinx.serialization.*\nimport kotlinx.serialization.json.Json\n\n")
 
 	for _, n := range keys {
 		t := (*tm)[n]
@@ -38,14 +39,14 @@ func GenerateKotlin(tm *utils.StructMap) (*string, error) {
 			// generate class
 			dep, _ := generate.GetClassDeps(tt, false)
 			gc1, gc2 := buildClass(n, dep)
-			s += gc1 + gc + gc2
+			s.WriteString(gc1 + gc + gc2)
 		default:
 			// // generate type content
 			gc := getTypeContent(tt)
 			// // generate type alias
 			gt1, gt2 := buildTypeAlias(n)
 
-			s += gt1 + gc + gt2
+			s.WriteString(gt1 + gc + gt2)
 		}
 	}
 

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/lil5/typex2/internal/generate/dart"
 	"github.com/lil5/typex2/internal/generate/kotlin"
@@ -19,36 +21,48 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "typex2",
-		Usage: "Convert go structs to typescript interfaces",
+		Name:        "typex2",
+		Usage:       "Convert go structs to other language types",
+		Description: "Useful for generating types from golang json RestAPI projects for a frontend to ingest.\n\nExample:\ntypex2 -l kotlin -i . -o ./classes.kotlin",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "lang",
-				Value:   "typescript",
-				Aliases: []string{"l", "language"},
-				Usage:   "Language to generate to",
+				Name:        "lang",
+				Value:       "typescript",
+				Aliases:     []string{"l", "language"},
+				Usage:       "Language to generate to [typescript, dart, kotlin, swift]",
+				DefaultText: "typescript",
+			},
+			&cli.PathFlag{
+				Name:      "input",
+				Value:     ".",
+				Aliases:   []string{"i"},
+				Usage:     "Input directory to read go types from",
+				TakesFile: false,
+				Required:  true,
+			},
+			&cli.PathFlag{
+				Name:      "output",
+				Aliases:   []string{"o"},
+				Usage:     "Output path & file to write translated types to",
+				TakesFile: true,
+				Required:  true,
 			},
 		},
 		ArgsUsage: "path",
 		Action: func(c *cli.Context) error {
-			path := c.Args().First()
 			lang := c.String("lang")
-
-			if len(path) == 0 {
-				fmt.Println(tools.NoEntry + " No path given")
-				os.Exit(1)
-			}
+			in := c.Path("input")
+			out := c.Path("output")
 
 			if len(lang) == 0 {
 				fmt.Println(tools.NoEntry + " No language given")
 				os.Exit(1)
 			}
 
-			if !checkIfDirExists(path) {
-				fmt.Println(tools.NoEntry + " Path does not exist")
-			}
+			mustDirExists(in)
+			mustCheckOutFile(out, lang)
 
-			pkg, err := read.LoadPackage(path)
+			pkg, err := read.LoadPackage(in)
 
 			if err != nil {
 				fmt.Printf(tools.NoEntry+" Loading packages failed: %v\n", err)
@@ -57,14 +71,14 @@ func main() {
 
 			st := read.MapPackage(pkg)
 
-			s, fname, err := runLanguage(st, lang)
+			s, err := runLanguage(st, lang)
 
 			if err != nil {
 				fmt.Printf(tools.NoEntry + " Generate language failed")
 				return err
 			}
 
-			err = write.FileWriter(path, fname, s)
+			err = write.FileWriter(out, s.String())
 			if err != nil {
 				fmt.Printf(tools.NoEntry+" Write to file unsuccessful: %v\n", err)
 				return err
@@ -82,33 +96,54 @@ func main() {
 	}
 }
 
-func checkIfDirExists(path string) bool {
+func mustDirExists(path string) {
 	stat, err := os.Stat(path)
 
-	return err == nil && stat.IsDir()
+	if err != nil || !stat.IsDir() {
+		fmt.Println(tools.NoEntry + " Path does not exist")
+		os.Exit(1)
+	}
 }
 
-func runLanguage(st *utils.StructMap, lang string) (*string, string, error) {
-	var fname string
+func mustCheckOutFile(out string, lang string) {
+	var suffix string
+	switch lang {
+	case utils.Typescript:
+		suffix = ".ts"
+	case utils.Dart:
+		suffix = ".dart"
+	case utils.Swift:
+		suffix = ".swift"
+	case utils.Kotlin:
+		suffix = ".kotlin"
+	default:
+		fmt.Println(tools.NoEntry + " Incorrect Language given")
+		os.Exit(1)
+	}
+	if !strings.HasSuffix(out, suffix) {
+		fmt.Println(tools.NoEntry + " Incorrect extension given to output file\nRequired extension: " + suffix)
+		os.Exit(1)
+	}
+
+	mustDirExists(filepath.Dir(out))
+}
+
+func runLanguage(st *utils.StructMap, lang string) (*strings.Builder, error) {
 	var err error
-	var s *string
+	var s *strings.Builder
 	switch lang {
 	case utils.Typescript:
 		s, err = typescript.GenerateTypescript(st)
-		fname = "index.ts"
 	case utils.Dart:
 		s, err = dart.GenerateDart(st)
-		fname = "classes.dart"
 	case utils.Swift:
 		s, err = swift.GenerateSwift(st)
-		fname = "classes.swift"
 	case utils.Kotlin:
 		s, err = kotlin.GenerateKotlin(st)
-		fname = "classes.kotlin"
 	default:
 		fmt.Println(tools.NoEntry + " Incorrect Language given")
 		os.Exit(1)
 	}
 
-	return s, fname, err
+	return s, err
 }

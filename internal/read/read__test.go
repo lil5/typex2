@@ -7,7 +7,7 @@ import (
 )
 
 func TestRead(t *testing.T) {
-	sut, result := GetSut(t, "../../examples", "index.ts")
+	sut, result := GetSut(t, "../../examples", "typex2.ts")
 
 	if sut == nil {
 		t.FailNow()
