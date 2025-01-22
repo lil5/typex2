@@ -1,6 +1,5 @@
 [![Go](https://github.com/lil5/typex2/actions/workflows/go.yml/badge.svg)](https://github.com/lil5/typex2/actions/workflows/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lil5/typex2)](https://goreportcard.com/report/github.com/lil5/typex2)
-[![Coverage Status](https://coveralls.io/repos/github/lil5/typex2/badge.svg?branch=master)](https://coveralls.io/github/lil5/typex2?branch=master)
 
 # TypeX 2
 
