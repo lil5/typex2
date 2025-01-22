@@ -28,10 +28,10 @@ export type TestMap = Record<string, string>
 
 export type TestMapInt = Record<number, string>
 
-export type TestPointer = (string | null)
+export type TestPointer = (string | null | undefined)
 
 export interface TestPointerStruct {
-	PP: (string | null)
+	PP?: (string | null | undefined)
 }
 
 export type TestRune = number

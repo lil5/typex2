@@ -8,7 +8,6 @@ import (
 )
 
 func getTypeContent(t types.Type, indent int) string {
-	// fmt.Printf("%v\n\n", t.String())
 	var s string
 	switch tt := t.(type) {
 	case *types.Chan, *types.Signature:
@@ -25,7 +24,7 @@ func getTypeContent(t types.Type, indent int) string {
 		s = getNamedType(tt)
 	case *types.Pointer:
 		s = getTypeContent(tt.Elem(), indent)
-		s += " | null"
+		s += " | null | undefined"
 		s = fmt.Sprintf("(%s)", s)
 	case *types.Slice:
 		s = getSliceType(tt, indent)
@@ -64,13 +63,17 @@ func getStructFields(t *types.Struct, indent int) string {
 			if omitempty {
 				t = generate.TurnTypeOptional(t)
 			}
+			switch t.(type) {
+			case *types.Pointer:
+				omitempty = true
+			}
 			s += generate.IndentStr(indent)
 			if omitempty {
 				s += fmt.Sprintf("%s?: ", tag)
 			} else {
 				s += fmt.Sprintf("%s: ", tag)
 			}
-			s += getTypeContent(field.Type(), indent)
+			s += getTypeContent(t, indent)
 			s += "\n"
 		}
 	}
