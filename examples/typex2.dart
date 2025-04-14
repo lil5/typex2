@@ -47,14 +47,17 @@ class TestStruct1 {
 }
 
 class TestStruct2Named {
+	id String;
 	two String;
 }
 
 class TestStruct3Extend extends TestStruct1 {
+	TestStruct1 TestStruct1;
 	TestStruct2Named TestStruct2Named;
 }
 
 class TestStruct5UsePackage {
+	myInt TestInt;
 	notExp testStruct4NotExported;
 }
 
@@ -67,6 +70,13 @@ class TestStruct7NamedOmit {
 
 class TestStruct8Time {
 	createdAt String;
+}
+
+class TestStruct9JsonFormUri {
+	One int;
+	two int;
+	three int;
+	four int;
 }
 
 typedef TestUint = int

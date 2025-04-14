@@ -1,13 +1,15 @@
 default:
 	@grep '^[^#[:space:].].*:' Makefile
 
-.PHONEY=test
+.PHONY: test
 test:
 	go test ./...
 coverage:
 	 go test -v -coverprofile=profile.cov ./...
 build:
 	 go build -o typex2
+
+.PHONY: examples
 examples:
 	make build
 	./typex2 -l typescript -i ./examples -o ./examples/typex2.ts

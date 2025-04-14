@@ -53,16 +53,19 @@ data class TestStruct1 (
 
 @Serializable
 data class TestStruct2Named (
+	val id: String,
 	val two: String,
 )
 
 @Serializable
 data class TestStruct3Extend: TestStruct1 (
+	val TestStruct1: TestStruct1,
 	val TestStruct2Named: TestStruct2Named,
 )
 
 @Serializable
 data class TestStruct5UsePackage (
+	val myInt: TestInt,
 	val notExp: testStruct4NotExported,
 )
 
@@ -78,6 +81,14 @@ data class TestStruct7NamedOmit (
 @Serializable
 data class TestStruct8Time (
 	val createdAt: String,
+)
+
+@Serializable
+data class TestStruct9JsonFormUri (
+	val One: Int,
+	val two: Int,
+	val three: Int,
+	val four: Int,
 )
 
 typealias TestUint = Int

@@ -47,14 +47,17 @@ class TestStruct1 {
 }
 
 class TestStruct2Named {
+	id String;
 	two String;
 }
 
 class TestStruct3Extend: TestStruct1 {
+	TestStruct1 TestStruct1;
 	TestStruct2Named TestStruct2Named;
 }
 
 class TestStruct5UsePackage {
+	myInt TestInt;
 	notExp testStruct4NotExported;
 }
 
@@ -67,6 +70,13 @@ class TestStruct7NamedOmit {
 
 class TestStruct8Time {
 	createdAt Time;
+}
+
+class TestStruct9JsonFormUri {
+	One Int;
+	two Int;
+	three Int;
+	four Int;
 }
 
 typealias TestUint = Int

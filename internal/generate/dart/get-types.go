@@ -12,7 +12,7 @@ func getClassFields(t *types.Struct, indent int) string {
 	}
 	var s string
 	indent += 1
-	for i := 0; i < t.NumFields(); i++ {
+	for i := range t.NumFields() {
 		field := t.Field(i)
 		tag, omitempty := generate.GetStructTagJSON(t, i)
 		if tag == "-" {
@@ -22,7 +22,7 @@ func getClassFields(t *types.Struct, indent int) string {
 		if omitempty {
 			t = generate.TurnTypeOptional(t)
 		}
-		s = generate.IndentStr(indent)
+		s += generate.IndentStr(indent)
 		s += tag + " " + getTypeContent(t) + ";\n"
 	}
 	return s

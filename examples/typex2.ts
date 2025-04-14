@@ -60,7 +60,7 @@ export interface TestStruct5UsePackage {
 }
 
 export interface TestStruct6NamedOmitempty {
-	one?: string
+	one?: (string | null | undefined)
 }
 
 export interface TestStruct7NamedOmit {
@@ -68,6 +68,13 @@ export interface TestStruct7NamedOmit {
 
 export interface TestStruct8Time {
 	createdAt: string
+}
+
+export interface TestStruct9JsonFormUri {
+	One: number
+	two: number
+	three: number
+	four: number
 }
 
 export type TestUint = number

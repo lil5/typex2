@@ -22,7 +22,7 @@ func getClassFields(t *types.Struct, indent int) string {
 		if omitempty {
 			t = generate.TurnTypeOptional(t)
 		}
-		s = generate.IndentStr(indent)
+		s += generate.IndentStr(indent)
 		s += "val " + tag + ": " + getTypeContent(t)
 		s += ",\n"
 	}

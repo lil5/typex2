@@ -36,3 +36,10 @@ type TestStruct7NamedOmit struct {
 type TestStruct8Time struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
+
+type TestStruct9JsonFormUri struct {
+	One       int
+	TwoJson   int `json:"two"`
+	ThreeForm int `json:"three"`
+	FourUri   int `json:"four"`
+}
