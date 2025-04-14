@@ -5,4 +5,5 @@ const (
 	Dart       = "dart"
 	Swift      = "swift"
 	Kotlin     = "kotlin"
+	Rust       = "rust"
 )

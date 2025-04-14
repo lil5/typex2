@@ -16,3 +16,4 @@ examples:
 	./typex2 -l dart -i ./examples -o ./examples/typex2.dart
 	./typex2 -l swift -i ./examples -o ./examples/typex2.swift
 	./typex2 -l kotlin -i ./examples -o ./examples/typex2.kotlin
+	./typex2 -l rust -i ./examples -o ./examples/typex2.rs

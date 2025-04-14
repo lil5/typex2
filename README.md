@@ -65,24 +65,24 @@ TypeScript (resp. JavaScript aka ECMAScript) lacks a native integer number type.
 The numeric type provided there is inherently a 64 bit float.
 You should keep this in mind when working with exported numeric types - this includes `byte` and `rune` type aliases as well.    
 
-|Go native types|TypeScript|Dart 🆕|Kotlin 🆕|Swift 🆕|
-| --- | --- | --- | --- | --- |
-|`bool`|`boolean`|`bool`|`Boolean`|`Bool`|
-|`string`|`string`|`String`|`String`|`String`|
-|`map`|`Record<K, V>`|`Map<K, V>`|`Map<K, V>`|`Dictionary<K, V>`|
-|`interface`|`Record<string, any>`|`Map<String, dynamic>`|`Map<String, Any>`|`Dictionary<String, Any>`|
-|`struct` `(named)`|`T`|`dynamic`|`Any`|`Any`|
-|`struct` `(anonymous)`|`{}`|`dynamic`|`Any`|`Any`|
-|`array` `(slice)`|`T[]`|`List<T>`|`Array<T>`|`Array<T>`|
-|`complex`[`64`&vert;`128`]|`any`|`dynamic`|`Float`|`Float`|
-|`chan`, `func`, `interface`|`any`|`dynamic`|`Any`|`Any`|
-|`int`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`|`int`|`Int`|`Int`|
-|`uint`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`|`int`|`Int`|`Int`|
-|`byte`(=`uint8`)|`number`|`int`|`Int`|`Int`|
-|`rune`(=`int32`)|`number`|`dynamic`|`Any`|`Any`|
-|`float`[`32`&vert;`64`]|`number`|`double`|`Double`|`Double`|
-|`uintptr`|`any`|`dynamic`|`Any`|`Any`|
-|`*`|`T \| null`|`T?`|`T?`|`T?`|
+|Go native types|TypeScript|Dart 🆕|Kotlin 🆕|Swift 🆕|Rust 🆕|
+| --- | --- | --- | --- | --- | --- |
+|`bool`|`boolean`|`bool`|`Boolean`|`Bool`|`bool`|
+|`string`|`string`|`String`|`String`|`String`|`String`|
+|`map`|`Record<K, V>`|`Map<K, V>`|`Map<K, V>`|`Dictionary<K, V>`|`Map<K, V>`|
+|`interface`|`Record<string, any>`|`Map<String, dynamic>`|`Map<String, Any>`|`Dictionary<String, Any>`|`Map<K, V>`|
+|`struct` `(named)`|`T`|`dynamic`|`Any`|`Any`|`<T1>`|
+|`struct` `(anonymous)`|`{}`|`dynamic`|`Any`|`Any`|`<T2>`|
+|`array` `(slice)`|`T[]`|`List<T>`|`Array<T>`|`Array<T>`|`Vec<T>`|
+|`complex`[`64`&vert;`128`]|`any`|`dynamic`|`Float`|`Float`|`f64`|
+|`chan`, `func`, `interface`|`any`|`dynamic`|`Any`|`Any`|`T3`|
+|`int`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`|`int`|`Int`|`Int`|`i8,i16,i32,i64`|
+|`uint`[`8`&vert;`16`&vert;`32`&vert;`64`]|`number`|`int`|`Int`|`Int`|`u8,u16,u32,u64`|
+|`byte`(=`uint8`)|`number`|`int`|`Int`|`Int`|`i8`|
+|`rune`(=`int32`)|`number`|`dynamic`|`Any`|`Any`|`i32`|
+|`float`[`32`&vert;`64`]|`number`|`double`|`Double`|`Double`|`f32,f64`|
+|`uintptr`|`any`|`dynamic`|`Any`|`Any`|`T4`|
+|`*`|`T \| null`|`T?`|`T?`|`T?`|`Option<T5>`|
 
 ## Differences between typex2 and typex
 

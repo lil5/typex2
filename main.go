@@ -9,6 +9,7 @@ import (
 
 	"github.com/lil5/typex2/internal/generate/dart"
 	"github.com/lil5/typex2/internal/generate/kotlin"
+	"github.com/lil5/typex2/internal/generate/rust"
 	"github.com/lil5/typex2/internal/generate/swift"
 	"github.com/lil5/typex2/internal/generate/typescript"
 	"github.com/lil5/typex2/internal/read"
@@ -29,7 +30,7 @@ func main() {
 				Name:        "lang",
 				Value:       "typescript",
 				Aliases:     []string{"l", "language"},
-				Usage:       "Language to generate to [typescript, dart, kotlin, swift]",
+				Usage:       "Language to generate to [typescript, dart, kotlin, swift, rust]",
 				DefaultText: "typescript",
 			},
 			&cli.PathFlag{
@@ -116,6 +117,8 @@ func mustCheckOutFile(out string, lang string) {
 		suffix = ".swift"
 	case utils.Kotlin:
 		suffix = ".kotlin"
+	case utils.Rust:
+		suffix = ".rs"
 	default:
 		fmt.Println(tools.NoEntry + " Incorrect Language given")
 		os.Exit(1)
@@ -140,6 +143,8 @@ func runLanguage(st *utils.StructMap, lang string) (*strings.Builder, error) {
 		s, err = swift.GenerateSwift(st)
 	case utils.Kotlin:
 		s, err = kotlin.GenerateKotlin(st)
+	case utils.Rust:
+		s, err = rust.GenerateRust(st)
 	default:
 		fmt.Println(tools.NoEntry + " Incorrect Language given")
 		os.Exit(1)
