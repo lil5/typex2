@@ -42,17 +42,33 @@ func IndentStr(indent int) string {
 
 func GetStructTagJSON(t *types.Struct, i int) (tag string, omitempty bool) {
 	f := t.Field(i)
-	tag = f.Name()
+	tagGo := f.Name()
 
 	st := reflect.StructTag(t.Tag(i))
-	tagJSON, ok := st.Lookup("json")
-	if ok && tagJSON != "" {
-		tagSplit := strings.Split(tagJSON, ",")
-		omitempty = strings.Contains(tagJSON, "omitempty")
-		tag = tagSplit[0]
+	tag, omitempty, found := readTag(st, "json")
+	if !found {
+		tag, omitempty, found = readTag(st, "form")
+		if !found {
+			tag, omitempty, _ = readTag(st, "uri")
+		}
+	}
+	if tag == "" {
+		tag = tagGo
 	}
 
 	return tag, omitempty
+}
+
+func readTag(st reflect.StructTag, key string) (tag string, omitempty, found bool) {
+	var tagContents string
+	tagContents, found = st.Lookup(key)
+	if !found {
+		return "", false, false
+	}
+	tagSplit := strings.Split(tagContents, ",")
+	omitempty = strings.Contains(tagContents, "omitempty")
+	tag = tagSplit[0]
+	return
 }
 
 func TurnTypeOptional(t types.Type) types.Type {

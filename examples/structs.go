@@ -40,6 +40,6 @@ type TestStruct8Time struct {
 type TestStruct9JsonFormUri struct {
 	One       int
 	TwoJson   int `json:"two"`
-	ThreeForm int `json:"three"`
-	FourUri   int `json:"four"`
+	ThreeForm int `form:"three"`
+	FourUri   int `uri:"four"`
 }
